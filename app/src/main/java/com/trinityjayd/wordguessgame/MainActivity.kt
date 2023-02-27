@@ -12,16 +12,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val name = findViewById<EditText>(R.id.edtName)
+        var word = ""
         val submitbtn = findViewById<Button>(R.id.submitbtn)
-        val greeting = findViewById<TextView>(R.id.greetingtxt)
+
 
         val hintTextView = findViewById<TextView>(R.id.hinttxt)
         val guesstxt = findViewById<EditText>(R.id.guesstxt)
         val guessbtn = findViewById<Button>(R.id.guessbtn)
 
+
         submitbtn.setOnClickListener {
             //greet the user
+            val name = findViewById<EditText>(R.id.edtName)
+            val greeting = findViewById<TextView>(R.id.greetingtxt)
             greeting.text = "Hello ${name.text}!"
             submitbtn.isVisible = false
             name.isVisible = false
@@ -31,10 +34,19 @@ class MainActivity : AppCompatActivity() {
             heading.isVisible = true
 
             //predefined list of fruits
-            val fruits = listOf("Apple", "Banana", "Orange", "Pear", "Grape", "Strawberry", "Pineapple", "Watermelon")
+            val fruits = listOf(
+                "Apple",
+                "Banana",
+                "Orange",
+                "Pear",
+                "Grape",
+                "Strawberry",
+                "Pineapple",
+                "Watermelon"
+            )
             //randomly select a fruit
-            val random = fruits.asSequence().shuffled().find{true}
-            val word = random.toString()
+            val random = fruits.asSequence().shuffled().find { true }
+            word = random.toString()
 
             //display the hint
             hintTextView.text = createHint(word)
@@ -45,16 +57,26 @@ class MainActivity : AppCompatActivity() {
 
         guessbtn.setOnClickListener {
             //get the word the user guessed
+            val guess = guesstxt.text.toString()
+
+            val result = findViewById<TextView>(R.id.resulttxt)
+
+            if (guess == word) {
+                hintTextView.text = word
+                result.text = "You guessed the word!"
+            } else {
+                hintTextView.text = showCorrectLetters(word, guess)
+                result.text = "Try again!"
+            }
 
 
         }
 
-
     }
 
-    fun createHint(word: String): String {
+    private fun createHint(word: String): String {
         val hint = word.toCharArray()
-        for (i in 0 until hint.size) {
+        for (i in hint.indices) {
             if (hint[i] != ' ') {
                 hint[i] = '_'
             }
@@ -62,14 +84,18 @@ class MainActivity : AppCompatActivity() {
         return String(hint)
     }
 
-    fun showCorrectLetters(word: String, hint: String, letter: Char): String {
-        val hintArray = hint.toCharArray()
-        for (i in 0 until word.length) {
-            if (word[i] == letter) {
-                hintArray[i] = letter
+    private fun showCorrectLetters(word: String, guess: String): String {
+        var hint = createHint(word)
+        val chars = hint.toCharArray()
+        for(i in guess.indices){
+            for(j in word.indices){
+                if(guess[i] == word[j]){
+                    chars[j] = guess[i]
+                }
             }
         }
-        return String(hintArray)
+        hint = String(chars)
+        return hint
     }
 
 }
