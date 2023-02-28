@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
@@ -65,13 +66,16 @@ class MainActivity : AppCompatActivity() {
             //if their guess is correct, display the word
             if (guess.uppercase() == word.uppercase()) {
                 hintTextView.text = word
-                result.text = "You guessed the word!"
+                toastMessage()
+
             } else {
                 //if their guess is incorrect, display the hint
-                hintTextView.text = showCorrectLetters(word, guess)
+                val hint = hintTextView.text.toString()
+                hintTextView.text = showCorrectLetters(word, guess, hint)
                 //if they eventually make up the word display the word
                 if (hintTextView.text == word) {
-                    result.text = "You guessed the word!"
+                    toastMessage()
+                    result.text = ""
                 } else{
                     result.text = "Try again!"
                 }
@@ -93,22 +97,24 @@ class MainActivity : AppCompatActivity() {
         return String(hint)
     }
 
-    private fun showCorrectLetters(word: String, guess: String): String {
-        var hint = createHint(word)
+    private fun showCorrectLetters(word: String, guess: String, hint: String): String {
         //break up the hint into a char array
         val chars = hint.toCharArray()
         //loop through the guess and the word
         //check each letter of the guess against each letter of the word
-        for(i in guess.indices){
-            for(j in word.indices){
-                if(guess[i].uppercase() == word[j].uppercase()){
+        for (i in guess.indices) {
+            for (j in word.indices) {
+                if (guess[i].uppercase() == word[j].uppercase()) {
                     chars[j] = guess[i]
                 }
             }
         }
         //convert the char array back to a string
-        hint = String(chars)
-        return hint
+        return String(chars)
+    }
+
+    private fun toastMessage(){
+        Toast.makeText(this, "You guessed the word!", Toast.LENGTH_SHORT).show()
     }
 
 }
