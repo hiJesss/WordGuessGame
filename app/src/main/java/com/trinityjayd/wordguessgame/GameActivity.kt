@@ -51,27 +51,40 @@ class GameActivity : AppCompatActivity() {
         guesstxt.isVisible = true
         guessbtn.isVisible = true
 
+        var chances = 0
         guessbtn.setOnClickListener {
-            //get the word the user guessed
-            val guess = guesstxt.text.toString()
+            if (chances < 5 ){
+                chances += 1
+                //get the word the user guessed
+                val guess = guesstxt.text.toString()
 
-            val result = findViewById<TextView>(R.id.resulttxt)
-            result.text = ""
-            //if their guess is correct, display the word
-            if (guess.uppercase() == word.uppercase()) {
-                hintTextView.text = word
-                toastMessage()
-            } else {
-                //if their guess is incorrect, display the hint
-                val hint = hintTextView.text.toString()
-                hintTextView.text = showCorrectLetters(word, guess,hint)
-                //if they eventually make up the word display the word
-                if (hintTextView.text.toString().uppercase() == word.uppercase()) {
+                val result = findViewById<TextView>(R.id.resulttxt)
+                result.text = ""
+
+                val chance = findViewById<TextView>(R.id.chancestxt)
+                //if their guess is correct, display the word
+                if (guess.uppercase() == word.uppercase()) {
+                    hintTextView.text = word
                     toastMessage()
-                } else{
-                    result.text = "Try again!"
+                    chance.text = ""
+                } else {
+                    chance.text = "You have ${5-chances} chances left"
+                    //if their guess is incorrect, display the hint
+                    val hint = hintTextView.text.toString()
+                    hintTextView.text = showCorrectLetters(word, guess,hint)
+                    //if they eventually make up the word display the word
+                    if (hintTextView.text.toString().uppercase() == word.uppercase()) {
+                        toastMessage()
+                        chance.text = ""
+                    } else{
+                        result.text = "Try again!"
+                    }
                 }
             }
+
+
+
+
 
 
         }
