@@ -14,10 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var word = ""
         val submitbtn = findViewById<Button>(R.id.submitbtn)
-        /**/
-
 
         submitbtn.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
