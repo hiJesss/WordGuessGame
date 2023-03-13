@@ -27,16 +27,9 @@ class GameActivity : AppCompatActivity() {
         heading.isVisible = true
 
         //predefined list of fruits
-        val fruits = listOf(
-            "Apple",
-            "Banana",
-            "Orange",
-            "Pear",
-            "Grape",
-            "Strawberry",
-            "Pineapple",
-            "Watermelon"
-        )
+        val wordObj = Words()
+
+        val fruits = wordObj.getWords()
         //randomly select a fruit
         val random = fruits.asSequence().shuffled().find { true }
         word = random.toString()
