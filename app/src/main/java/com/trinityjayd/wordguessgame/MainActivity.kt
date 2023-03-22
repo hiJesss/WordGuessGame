@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,12 +13,21 @@ class MainActivity : AppCompatActivity() {
 
         val submitbtn = findViewById<Button>(R.id.submitbtn)
 
+        val listbtn = findViewById<Button>(R.id.wordlistbtn)
+
         submitbtn.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             intent.putExtra("username", findViewById<EditText>(R.id.edtName).text.toString())
             startActivity(intent)
 
         }
+
+        listbtn.setOnClickListener {
+            val intent = Intent(this, ListActivity::class.java)
+            startActivity(intent)
+        }
+
+
 
     }
 
